@@ -1,0 +1,70 @@
+.main_banner {
+  background-image: url("https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_16_1.webp?v=1718400944");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+.cta_section {
+  position: relative;
+  background-image: url("https://cdn.shopify.com/s/files/1/0704/6378/2946/files/Group_72167.png?v=1719400501");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  object-fit: fill;
+}
+
+.bg_reviews {
+  position: relative;
+  background-image: url("https://cdn.shopify.com/s/files/1/0704/6378/2946/files/Rectangle_4021.png?v=1717969538");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  object-fit: fill;
+}
+
+.custom-shape-divider-top-1717971167 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  overflow: hidden;
+  line-height: 0;
+}
+
+.custom-shape-divider-top-1717971167 svg {
+  position: relative;
+  display: block;
+  width: calc(100% + 1.3px);
+  height: 38px;
+}
+
+.custom-shape-divider-top-1717971167 .shape-fill {
+  fill: #ffffff;
+}
+
+.service {
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+}
+
+.service_card1 {
+  background-image: url("https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_4015.webp?v=1718400944");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  object-fit: fill;
+}
+.service_card2 {
+  background-image: url("https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_4017.webp?v=1718400944");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  object-fit: fill;
+}
+.service_card3 {
+  background-image: url("https://cdn.shopify.com/s/files/1/0852/5099/8550/files/Rectangle_4016.webp?v=1718400944");
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  object-fit: fill;
+}

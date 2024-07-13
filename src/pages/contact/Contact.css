@@ -1,0 +1,10 @@
+.contactSectionbg {
+    background-image: url("https://cdn.shopify.com/s/files/1/0704/6378/2946/files/Rectangle_16_1.png?v=1718573737");
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.letterSpacing {
+    letter-spacing: 4px;
+}
