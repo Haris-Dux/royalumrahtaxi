@@ -1,4 +1,4 @@
-/bash
+#!/bin/bash
 
 cd /root/royalumrahtaxi
 
@@ -9,7 +9,8 @@ echo "Last commit: $(date)" >> auto_commit_log.txt
 git add .
 
 # Commit changes with a timestamp
-git commit -m "Automated commit on $(date +\%Y-\%m-\%d \%H:\%M:\%S)"
+git commit -m "Automated commit on $(date +\%Y-\%m-\%d_\%H:\%M:\%S)"
+
 
 # Push to the repository
 git push origin main  # Change 'main' if your branch is different
