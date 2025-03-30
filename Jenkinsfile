@@ -17,12 +17,7 @@ pipeline {
             steps {
                 script {
                     // Check Docker installation and permissions
-                    sh '''
-                        # Check Docker installation
-                        if ! command -v docker &> /dev/null; then
-                            echo "Docker is not installed. Please install Docker first."
-                            exit 1
-                        fi
+                    sh '''                     
                         
                         # Ensure Docker daemon is running
                         if ! docker info >/dev/null 2>&1; then
