@@ -20,7 +20,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copy built assets from build stage
-COPY --from=build dist /usr/share/nginx/html
+COPY --from=dist /dist /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
