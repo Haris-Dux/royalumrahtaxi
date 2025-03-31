@@ -5,7 +5,7 @@ FROM node:22.14.0-alpine as build
 WORKDIR /
 
 # Copy package files
-COPY package*.json /
+COPY package*.json ./
 
 # Install dependencies
 RUN npm install --legacy-peer-deps
@@ -20,7 +20,7 @@ RUN npm run build
 FROM nginx:alpine
 
 # Copy built assets from build stage
-COPY --from=dist /dist /usr/share/nginx/html
+COPY --from=build /dist /usr/share/nginx/html
 
 # Expose port 80
 EXPOSE 80
