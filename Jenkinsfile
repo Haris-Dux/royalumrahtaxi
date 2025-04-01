@@ -114,8 +114,7 @@ stage('Deploy to VPS') {
 
                          # --- DELETE PREVIOUS IMAGE ---
                         echo "Removing previous Docker images..."
-                         docker images ${HUB_USERNAME}/${APP_NAME} --format '{{.ID}} {{.Tag}}' | grep -v "$${BUILD_NUMBER}" | awk '{print $$1}' | xargs -r docker rmi -f
-                    
+docker images '${HUB_USERNAME}/${APP_NAME}' --format '{{.ID}} {{.Tag}}' | grep -v "$BUILD_NUMBER" | awk '{print $1}' | xargs -r docker rmi -f                    
                 """
             }
         }
