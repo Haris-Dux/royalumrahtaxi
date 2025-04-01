@@ -73,30 +73,14 @@ pipeline {
                     echo '${DOCKERHUB_PAT}' | docker login -u ${HUB_USERNAME} --password-stdin
 
                     # Build and tag image in one step 
-                    docker build -t ${HUB_USERNAME}/${APP_NAME}:${DOCKER_IMAGE} .
+                    docker build -t ${HUB_USERNAME}/${APP_NAME}:${BUILD_NUMBER} .
 
                     # Push the image
-                    docker push ${HUB_USERNAME}/${APP_NAME}:${DOCKER_IMAGE}
+                    docker push ${HUB_USERNAME}/${APP_NAME}:${BUILD_NUMBER}
                     echo "Image Pushed successfully to Docker Hub"
                 """
             }
 
-            // Stop and remove existing container
-            sh """
-                docker stop ${APP_NAME} || true
-                docker rm ${APP_NAME} || true
-
-                # Run new container
-                docker run -d -p ${PORT}:80 --name ${APP_NAME} ${APP_NAME}
-
-                # Verify container is running
-                sleep 5
-                if ! docker ps | grep ${APP_NAME}; then
-                    echo "Container failed to start"
-                    docker logs ${APP_NAME}
-                    exit 1
-                fi
-            """
         }
     }
 }
@@ -107,19 +91,11 @@ pipeline {
         always {
             // Clean workspace
             cleanWs()
-            
-            // Print container status
-            sh """
-                echo "Container status:"
-                docker ps -a | grep ${APP_NAME} || true
-            """
         }
         success {
             script {
                 sh """
-                    echo "Deployment successful!"
-                    echo "Application is accessible at http://localhost:${PORT}"
-                    docker ps | grep ${APP_NAME}
+                    echo "Deployment successful!"                 
                 """
             }
         }
@@ -127,8 +103,6 @@ pipeline {
             script {
                 sh """
                     echo "Deployment failed!"
-                    echo "Container logs:"
-                    docker logs ${APP_NAME} || true
                 """
             }
         }
