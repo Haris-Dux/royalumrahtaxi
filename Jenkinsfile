@@ -67,25 +67,20 @@ pipeline {
                     sh """
                         # Build new Docker image
                         docker build -t ${DOCKER_IMAGE} .
-                        
-                        # Stop and remove existing container
-                        docker stop ${APP_NAME} || true
-                        docker rm ${APP_NAME} || true
-                        
-                        # Run new container
-                        docker run -d -p ${PORT}:80 --name ${APP_NAME} ${DOCKER_IMAGE}
-                        
-                        # Verify container is running
-                        sleep 5
-                        if ! docker ps | grep ${APP_NAME}; then
-                            echo "Container failed to start"
-                            docker logs ${APP_NAME}
-                            exit 1
-                        fi
+
+                        # Authenticate with Docker Hub
+                        withCredentials([string(credentialsId: 'DOCKERHUB_TOKEN', variable: 'DOCKERHUB_PAT')]) {
+                        sh "docker login -u 'harisdux' --password-stdin <<< '${DOCKERHUB_PAT}'"
+                        }
+
+                        # Push the image
+                        docker push ${DOCKER_IMAGE}
                     """
                 }
             }
         }
+
+        
     }
     
     post {
