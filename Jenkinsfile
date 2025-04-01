@@ -10,6 +10,8 @@ pipeline {
         APP_NAME = 'react-frontend'
         DOCKER_IMAGE = "${APP_NAME}:${BUILD_NUMBER}"
         PORT = '80'
+        HUB_REPOSITORY = 'react-frontend'
+        HUB_USERNAME = 'harisdux'
     }
     
     stages {
@@ -68,19 +70,13 @@ pipeline {
             withCredentials([string(credentialsId: 'DOCKERHUB_TOKEN', variable: 'DOCKERHUB_PAT')]) {
                 sh """
                     echo "Logging into Docker Hub"
-                    echo '${DOCKERHUB_PAT}' | docker login -u 'harisdux' --password-stdin
+                    echo '${DOCKERHUB_PAT}' | docker login -u ${HUB_USERNAME} --password-stdin
 
-                    # Build new Docker image
-                    docker build -t ${DOCKER_IMAGE} .
-
-
-        
-
-                    # Tag the image with the Docker Hub repository and build number
-                    docker tag ${DOCKER_IMAGE} harisdux/react-frontend:${BUILD_NUMBER}
+                    # Build and tag image in one step 
+                    docker build -t ${HUB_USERNAME}/${APP_NAME}:${BUILD_NUMBER} .
 
                     # Push the image
-                    docker push harisdux/react-frontend:${BUILD_NUMBER}
+                    docker push ${HUB_USERNAME}/${APP_NAME}:${BUILD_NUMBER}
                     echo "Image Pushed successfully to Docker Hub"
                 """
             }
