@@ -77,7 +77,7 @@ pipeline {
         
 
                     # Push the image
-                    docker push harisdux/${DOCKER_IMAGE}
+                    docker push ${DOCKER_IMAGE}
                     echo "Image Pushed successfully to Docker Hub"
                 """
             }
