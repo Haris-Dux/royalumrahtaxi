@@ -74,8 +74,7 @@ pipeline {
                     docker build -t ${DOCKER_IMAGE} .
 
 
-                    # Tag the image with the Docker Hub repository and build number
-                    docker tag ${DOCKER_IMAGE} harisdux/${DOCKER_IMAGE}
+        
 
                     # Push the image
                     docker push harisdux/${DOCKER_IMAGE}
