@@ -106,6 +106,16 @@ stage('Deploy to VPS') {
 
                         echo "Starting new container"
                         docker run -d --name ${APP_NAME} -p 5000:80 ${HUB_USERNAME}/${APP_NAME}:${BUILD_NUMBER}
+
+                        sleep 5
+
+                        echo "Restarting Nginx"
+                        systemctl restart nginx
+
+                         # --- DELETE PREVIOUS IMAGE ---
+                        echo "Removing previous Docker images..."
+                        docker images ${HUB_USERNAME}/${APP_NAME} --format '{{.ID}} {{.Tag}}' | grep -v '${BUILD_NUMBER}' | awk '{print $1}' | xargs -r docker rmi -f
+
                     
                 """
             }
