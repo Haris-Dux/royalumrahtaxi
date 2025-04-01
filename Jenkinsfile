@@ -106,7 +106,7 @@ stage('Deploy to VPS') {
 
                         echo "Starting new container"
                         docker run -d --name ${APP_NAME} -p 5000:80 ${HUB_USERNAME}/${APP_NAME}:${BUILD_NUMBER}
-                    EOF
+                    
                 """
             }
         }
