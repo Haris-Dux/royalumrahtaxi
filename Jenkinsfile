@@ -67,6 +67,16 @@ pipeline {
                     sh """
                         # Build new Docker image
                         docker build -t ${DOCKER_IMAGE} .
+
+                          # Authenticate with Docker Hub
+                            echo "Logging into Docker Hub"
+                        withCredentials([string(credentialsId: 'DOCKERHUB_TOKEN', variable: 'DOCKERHUB_PAT')]) {
+                        sh "docker login -u 'harisdux' --password-stdin <<< '${DOCKERHUB_PAT}'"
+                        }
+
+                        # Push the image
+                        docker push ${DOCKER_IMAGE}
+                          echo "Image Pushed successfully to Docker Hub"
                         
                         # Stop and remove existing container
                         docker stop ${APP_NAME} || true
@@ -74,6 +84,8 @@ pipeline {
                         
                         # Run new container
                         docker run -d -p ${PORT}:80 --name ${APP_NAME} ${DOCKER_IMAGE}
+
+                       
                         
                         # Verify container is running
                         sleep 5
