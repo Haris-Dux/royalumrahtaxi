@@ -71,7 +71,7 @@ pipeline {
                           # Authenticate with Docker Hub
                             echo "Logging into Docker Hub"
                         withCredentials([string(credentialsId: 'DOCKERHUB_TOKEN', variable: 'DOCKERHUB_PAT')]) {
-                        sh "docker login -u 'harisdux' --password-stdin <<< '${DOCKERHUB_PAT}'"
+                         "docker login -u 'harisdux' --password-stdin <<< '${DOCKERHUB_PAT}'"
                         }
 
                         # Push the image
