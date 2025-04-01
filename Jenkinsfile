@@ -64,7 +64,7 @@ pipeline {
         }
         
        stage('Docker Build & Deploy') {
-    steps {
+          steps {
         script {
             // Authenticate with Docker Hub
             withCredentials([string(credentialsId: 'DOCKERHUB_TOKEN', variable: 'DOCKERHUB_PAT')]) {
@@ -84,6 +84,35 @@ pipeline {
         }
     }
 }
+
+stage('Deploy to VPS') {
+    steps {
+        script {
+            withCredentials([
+                usernamePassword(credentialsId: 'VPS_CREDENTIALS', usernameVariable: 'VPS_USER', passwordVariable: 'VPS_PASS'),
+                string(credentialsId: 'DOCKERHUB_TOKEN', variable: 'DOCKERHUB_PAT')
+            ]) {
+                sh """
+                    sshpass -p "${VPS_PASS}" ssh -o StrictHostKeyChecking=no ${VPS_USER}@31.220.109.115 <<EOF
+                        echo "Logging into Docker Hub"
+                        echo '${DOCKERHUB_PAT}' | docker login -u ${HUB_USERNAME} --password-stdin
+
+                        echo "Pulling latest Docker image"
+                        docker pull ${HUB_USERNAME}/${APP_NAME}:${BUILD_NUMBER}
+
+                        echo "Stopping old container (if running)"
+                        docker stop ${APP_NAME} || true
+                        docker rm ${APP_NAME} || true
+
+                        echo "Starting new container"
+                        docker run -d --name ${APP_NAME} -p ${PORT}:80 ${HUB_USERNAME}/${APP_NAME}:${BUILD_NUMBER}
+                    EOF
+                """
+            }
+        }
+    }
+}
+
 
     }
     
