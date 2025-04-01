@@ -76,8 +76,11 @@ pipeline {
 
         
 
+                    # Tag the image with the Docker Hub repository and build number
+                    docker tag ${DOCKER_IMAGE} harisdux/react-frontend:${BUILD_NUMBER}
+
                     # Push the image
-                    docker push react-frontend
+                    docker push harisdux/react-frontend:${BUILD_NUMBER}
                     echo "Image Pushed successfully to Docker Hub"
                 """
             }
