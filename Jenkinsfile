@@ -83,11 +83,11 @@ pipeline {
 
             // Stop and remove existing container
             sh """
-                docker stop ${APP_NAME} || true
-                docker rm ${APP_NAME} || true
+                docker stop ${HUB_USERNAME}/${APP_NAME} || true
+                docker rm ${HUB_USERNAME}/${APP_NAME} || true
 
                 # Run new container
-                docker run -d -p ${PORT}:80 --name ${APP_NAME} ${DOCKER_IMAGE}
+                docker run -d -p ${PORT}:80 --name ${HUB_USERNAME}/${APP_NAME} ${DOCKER_IMAGE}
 
                 # Verify container is running
                 sleep 5
