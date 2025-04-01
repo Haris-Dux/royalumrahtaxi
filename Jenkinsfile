@@ -73,21 +73,21 @@ pipeline {
                     echo '${DOCKERHUB_PAT}' | docker login -u ${HUB_USERNAME} --password-stdin
 
                     # Build and tag image in one step 
-                    docker build -t ${HUB_USERNAME}/${APP_NAME}:${BUILD_NUMBER} .
+                    docker build -t ${HUB_USERNAME}/${APP_NAME}:${DOCKER_IMAGE} .
 
                     # Push the image
-                    docker push ${HUB_USERNAME}/${APP_NAME}:${BUILD_NUMBER}
+                    docker push ${HUB_USERNAME}/${APP_NAME}:${DOCKER_IMAGE}
                     echo "Image Pushed successfully to Docker Hub"
                 """
             }
 
             // Stop and remove existing container
             sh """
-                docker stop ${HUB_USERNAME}/${APP_NAME} || true
-                docker rm ${HUB_USERNAME}/${APP_NAME} || true
+                docker stop ${APP_NAME} || true
+                docker rm ${APP_NAME} || true
 
                 # Run new container
-                docker run -d -p ${PORT}:80 --name ${APP_NAME} ${HUB_USERNAME}/${DOCKER_IMAGE}
+                docker run -d -p ${PORT}:80 --name ${APP_NAME} ${APP_NAME}
 
                 # Verify container is running
                 sleep 5
