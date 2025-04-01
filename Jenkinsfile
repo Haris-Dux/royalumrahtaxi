@@ -77,7 +77,7 @@ pipeline {
         
 
                     # Push the image
-                    docker push ${DOCKER_IMAGE}
+                    docker push react-frontend
                     echo "Image Pushed successfully to Docker Hub"
                 """
             }
