@@ -61,45 +61,44 @@ pipeline {
             }
         }
         
-        stage('Docker Build & Deploy') {
-            steps {
-                script {
-                    sh """
-                        # Build new Docker image
-                        docker build -t ${DOCKER_IMAGE} .
+       stage('Docker Build & Deploy') {
+    steps {
+        script {
+            // Authenticate with Docker Hub
+            withCredentials([string(credentialsId: 'DOCKERHUB_TOKEN', variable: 'DOCKERHUB_PAT')]) {
+                sh """
+                    echo "Logging into Docker Hub"
+                    echo '${DOCKERHUB_PAT}' | docker login -u 'harisdux' --password-stdin
 
-                          # Authenticate with Docker Hub
-                            echo "Logging into Docker Hub"
-                        withCredentials([string(credentialsId: 'DOCKERHUB_TOKEN', variable: 'DOCKERHUB_PAT')]) {
-                         "docker login -u 'harisdux' --password-stdin <<< '${DOCKERHUB_PAT}'"
-                        }
+                    # Build new Docker image
+                    docker build -t ${DOCKER_IMAGE} .
 
-                        # Push the image
-                        docker push ${DOCKER_IMAGE}
-                          echo "Image Pushed successfully to Docker Hub"
-                        
-                        # Stop and remove existing container
-                        docker stop ${APP_NAME} || true
-                        docker rm ${APP_NAME} || true
-                        
-                        # Run new container
-                        docker run -d -p ${PORT}:80 --name ${APP_NAME} ${DOCKER_IMAGE}
-
-                       
-                        
-                        # Verify container is running
-                        sleep 5
-                        if ! docker ps | grep ${APP_NAME}; then
-                            echo "Container failed to start"
-                            docker logs ${APP_NAME}
-                            exit 1
-                        fi
-
-                           
-                    """
-                }
+                    # Push the image
+                    docker push ${DOCKER_IMAGE}
+                    echo "Image Pushed successfully to Docker Hub"
+                """
             }
+
+            // Stop and remove existing container
+            sh """
+                docker stop ${APP_NAME} || true
+                docker rm ${APP_NAME} || true
+
+                # Run new container
+                docker run -d -p ${PORT}:80 --name ${APP_NAME} ${DOCKER_IMAGE}
+
+                # Verify container is running
+                sleep 5
+                if ! docker ps | grep ${APP_NAME}; then
+                    echo "Container failed to start"
+                    docker logs ${APP_NAME}
+                    exit 1
+                fi
+            """
         }
+    }
+}
+
     }
     
     post {
