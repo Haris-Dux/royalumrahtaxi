@@ -51,7 +51,7 @@ const Header = () => {
             >
               <img className="w-16" src={logo} alt="logo" />
               <h2 className="crimson text-gray-50 py-0 text-lg sm:text-xl font-semibold tracking-wide">
-                Royal Umrah Taxi
+                Royal Umrah Taxii
               </h2>
             </Link>
 
